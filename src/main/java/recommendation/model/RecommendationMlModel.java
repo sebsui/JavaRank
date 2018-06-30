@@ -11,6 +11,8 @@ import recommendation.exceptions.ModelNotReadyException;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
@@ -21,6 +23,8 @@ public class RecommendationMlModel {
 
     private ALS als = new ALS();
     private MatrixFactorizationModel model;
+    private ReentrantLock trainingLock = new ReentrantLock();
+
 
     private RDDHelper rddHelper = new RDDHelper(new JavaSparkContext(SPARK_MASTER, SPARK_APP_NAME));
 
@@ -41,8 +45,23 @@ public class RecommendationMlModel {
         return prediction;
     }
 
-    public void createModel(Collection<InputRating> ratings) {
-        trainModel(ratings);
+    public void createModelOnce(Collection<InputRating> ratings) {
+        asyncTrainModel(ratings);
+    }
+
+    public void createModel(Callable<Collection<InputRating>> ratingsFunction) throws Exception {
+        asyncTrainModel(ratingsFunction.call());
+    }
+
+    public void asyncTrainModel(Collection<InputRating> inputRatings) {
+        Thread thread = new Thread(() -> {
+            if (trainingLock.isLocked())
+                return;
+            trainingLock.lock();
+            trainModel(inputRatings);
+            trainingLock.unlock();
+        });
+        thread.start();
     }
 
     private void trainModel(Collection<InputRating> ratings) {
