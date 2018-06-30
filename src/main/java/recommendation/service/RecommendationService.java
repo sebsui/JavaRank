@@ -9,14 +9,14 @@ import java.util.concurrent.Callable;
 
 public class RecommendationService {
 
-    RecommendationMlModel recommendationMlModel = new RecommendationMlModel();
+    private RecommendationMlModel recommendationMlModel;
 
     public RecommendationService(Collection<InputRating> ratings) {
-        recommendationMlModel.createModelOnce(ratings);
+        recommendationMlModel = new RecommendationMlModel(ratings);
     }
 
-    public RecommendationService(Callable<Collection<InputRating>> ratings) throws Exception {
-        recommendationMlModel.createModel(ratings);
+    public RecommendationService(Callable<Collection<InputRating>> ratings) {
+        recommendationMlModel = new RecommendationMlModel(ratings);
     }
 
     public boolean isModelReady() {
