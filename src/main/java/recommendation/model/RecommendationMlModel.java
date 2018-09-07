@@ -20,13 +20,13 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
+/**
+ * Model Class which provides the predictions
+ */
 public class RecommendationMlModel {
 
     private static final String SPARK_APP_NAME = "Recommendation Engine";
     private static final String SPARK_MASTER = "local";
-    private static final long RETRAIN_TIME_IN_SECONDS = 20;
-    private static final long INITIAL_DELAY_IN_SECONDS = 20;
-
     private ALS als = new ALS();
     private MatrixFactorizationModel model;
     private ReentrantLock trainingLock = new ReentrantLock();
@@ -39,20 +39,43 @@ public class RecommendationMlModel {
 
     private volatile boolean modelIsReady = false;
 
-
-    public RecommendationMlModel(Callable<Collection<InputRating>> inputRatings) {
+    /**
+     * Constructor, which allows to retrain and replace the model.
+     * The given Callable will be used to get the data for the model.
+     *
+     * @param inputRatings callable to get the Inputratings for the Model
+     * @param retrainTime  Time to wait before training a new model
+     * @param initialDelay Time to wait before training the first model
+     */
+    public RecommendationMlModel(Callable<Collection<InputRating>> inputRatings, long retrainTime, long initialDelay) {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(() -> asyncTrainModel(inputRatings), INITIAL_DELAY_IN_SECONDS, RETRAIN_TIME_IN_SECONDS, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(() -> asyncTrainModel(inputRatings), initialDelay, retrainTime, TimeUnit.SECONDS);
     }
 
+    /**
+     * Constructor, which trains the model once. provide a callable, if you want your model to improve periodically.
+     *
+     * @param inputRatings
+     */
     public RecommendationMlModel(Collection<InputRating> inputRatings) {
         asyncTrainModel(inputRatings);
     }
 
+    /**
+     * @return true if a model is ready. Just can be false, if the modul was new init and the first model is not ready yet.
+     */
     public boolean isModelReady() {
         return modelIsReady;
     }
 
+    /**
+     * Provides a prediction for the given parameters
+     *
+     * @param userId
+     * @param eventId
+     * @return the prediction, which rating the used is likely to give
+     * @throws ModelNotReadyException
+     */
     public Double getInterestPrediction(Integer userId, Integer eventId) throws ModelNotReadyException {
         if (!modelIsReady)
             throw new ModelNotReadyException();
@@ -62,6 +85,9 @@ public class RecommendationMlModel {
         return prediction;
     }
 
+    /**
+     * Close the sparkContext and set the resources free
+     */
     public void close() {
         javaSparkContext.close();
     }

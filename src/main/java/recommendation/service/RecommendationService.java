@@ -15,8 +15,8 @@ public class RecommendationService {
         recommendationMlModel = new RecommendationMlModel(ratings);
     }
 
-    public RecommendationService(Callable<Collection<InputRating>> ratings) {
-        recommendationMlModel = new RecommendationMlModel(ratings);
+    public RecommendationService(Callable<Collection<InputRating>> ratings, long retrainTime, long initialDelay) {
+        recommendationMlModel = new RecommendationMlModel(ratings, retrainTime, initialDelay);
     }
 
     public boolean isModelReady() {
