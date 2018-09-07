@@ -43,7 +43,7 @@ public class RecommendationMlModel {
      * Constructor, which allows to retrain and replace the model.
      * The given Callable will be used to get the data for the model.
      *
-     * @param inputRatings callable to get the Inputratings for the Model
+     * @param inputRatings callable to get the Input ratings for the Model
      * @param retrainTime  Time to wait before training a new model
      * @param initialDelay Time to wait before training the first model
      */
@@ -62,7 +62,7 @@ public class RecommendationMlModel {
     }
 
     /**
-     * @return true if a model is ready. Just can be false, if the modul was new init and the first model is not ready yet.
+     * @return true if a model is ready. Just can be false, if the module was new init and the first model is not ready yet.
      */
     public boolean isModelReady() {
         return modelIsReady;

@@ -30,7 +30,7 @@ public class RDDHelper {
     /**
      * Converts a collection(mapped the values before) to a JavaRDD
      * @param collection
-     * @param mapper ( i.e. integer -> integer.toString() if you want to get a String RDD from a Integerlist)
+     * @param mapper ( i.e. integer -> integer.toString() if you want to get a String RDD from a Integer list)
      * @return The JavaRDD from the same generic type as the provided input
      */
     public <T> JavaRDD<T> getRddFromCollection(Collection<?> collection, Function<? super Object, ? extends T> mapper) {
