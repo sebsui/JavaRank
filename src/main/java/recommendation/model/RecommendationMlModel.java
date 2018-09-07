@@ -34,7 +34,7 @@ public class RecommendationMlModel {
     private final RDDHelper rddHelper = new RDDHelper(javaSparkContext);
     private MatrixFactorizationModel model;
 
-
+    private volatile Integer modelNumber = 0;
     private volatile boolean modelIsReady = false;
 
     /**
@@ -117,6 +117,7 @@ public class RecommendationMlModel {
         mutex.writeLock().lock();
         model = als.setRank(10).setIterations(10).run(ratingRDD);
         mutex.writeLock().unlock();
+        modelNumber++;
         modelIsReady = true;
 
     }
@@ -127,5 +128,9 @@ public class RecommendationMlModel {
                 .stream()
                 .map(ir -> new Rating(ir.getUserId(), ir.getProductId(), ir.getRating()))
                 .collect(Collectors.toList());
+    }
+
+    public Integer getModelNumber() {
+        return modelNumber;
     }
 }

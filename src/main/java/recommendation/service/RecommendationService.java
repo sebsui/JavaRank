@@ -31,5 +31,10 @@ public class RecommendationService {
         recommendationMlModel.close();
     }
 
-
+    /**
+     * returns the current version of the model (+1 for each new model)
+     */
+    public Integer getModelNumber() {
+        return recommendationMlModel.getModelNumber();
+    }
 }
