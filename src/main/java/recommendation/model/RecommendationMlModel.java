@@ -101,7 +101,7 @@ public class RecommendationMlModel {
     private List<Rating> createSparkRating(Collection<InputRating> inputRatings) {
         return inputRatings
                 .stream()
-                .map(ir -> new Rating(ir.getUserId(), ir.getProductId(), ir.getProductId()))
+                .map(ir -> new Rating(ir.getUserId(), ir.getProductId(), ir.getRating()))
                 .collect(Collectors.toList());
     }
 }

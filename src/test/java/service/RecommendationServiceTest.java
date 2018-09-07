@@ -31,13 +31,12 @@ public class RecommendationServiceTest {
 
         inputRatings.add(new InputRating(2, 1, 1));
         recommendationService = new RecommendationService(inputRatings);
-        while (!recommendationService.isModelReady()) {
-        }
+        while (!recommendationService.isModelReady()) {}
     }
 
     @Test
     public void shouldNotForgetKnownRating() throws ModelNotReadyException {
-        assertThat(recommendationService.getPrediction(1, 2), greaterThan(recommendationService.getPrediction(1, 1)));
+        assertThat(recommendationService.getPrediction(1, 2), lessThan(recommendationService.getPrediction(1, 1)));
         assertNotEquals(0.0, recommendationService.getPrediction(1, 1));
     }
 
