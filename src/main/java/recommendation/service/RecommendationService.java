@@ -27,5 +27,9 @@ public class RecommendationService {
         return recommendationMlModel.getInterestPrediction(userId, productId);
     }
 
+    public void close() {
+        recommendationMlModel.close();
+    }
+
 
 }

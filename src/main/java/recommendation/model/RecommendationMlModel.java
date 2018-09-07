@@ -30,13 +30,14 @@ public class RecommendationMlModel {
     private ALS als = new ALS();
     private MatrixFactorizationModel model;
     private ReentrantLock trainingLock = new ReentrantLock();
+    private JavaSparkContext javaSparkContext = new JavaSparkContext(SPARK_MASTER, SPARK_APP_NAME);
 
 
-    private RDDHelper rddHelper = new RDDHelper(new JavaSparkContext(SPARK_MASTER, SPARK_APP_NAME));
+    private RDDHelper rddHelper = new RDDHelper(javaSparkContext);
 
     private ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
 
-    private boolean modelIsReady = false;
+    private volatile boolean modelIsReady = false;
 
 
     public RecommendationMlModel(Callable<Collection<InputRating>> inputRatings) {
@@ -59,6 +60,10 @@ public class RecommendationMlModel {
         Double prediction = model.predict(userId, eventId);
         mutex.readLock().unlock();
         return prediction;
+    }
+
+    public void close() {
+        javaSparkContext.close();
     }
 
     private void asyncTrainModel(Callable<Collection<InputRating>> inputRatings) {
@@ -89,6 +94,7 @@ public class RecommendationMlModel {
         model = als.setRank(10).setIterations(10).run(ratingRDD);
         mutex.writeLock().unlock();
         modelIsReady = true;
+
     }
 
 
