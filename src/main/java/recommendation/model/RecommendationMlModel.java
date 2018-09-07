@@ -27,15 +27,13 @@ public class RecommendationMlModel {
 
     private static final String SPARK_APP_NAME = "Recommendation Engine";
     private static final String SPARK_MASTER = "local";
-    private ALS als = new ALS();
+    private final ReentrantLock trainingLock = new ReentrantLock();
+    private final ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
+    private final JavaSparkContext javaSparkContext = new JavaSparkContext(SPARK_MASTER, SPARK_APP_NAME);
+    private final ALS als = new ALS();
+    private final RDDHelper rddHelper = new RDDHelper(javaSparkContext);
     private MatrixFactorizationModel model;
-    private ReentrantLock trainingLock = new ReentrantLock();
-    private JavaSparkContext javaSparkContext = new JavaSparkContext(SPARK_MASTER, SPARK_APP_NAME);
 
-
-    private RDDHelper rddHelper = new RDDHelper(javaSparkContext);
-
-    private ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
 
     private volatile boolean modelIsReady = false;
 

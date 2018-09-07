@@ -9,7 +9,6 @@ import recommendation.service.RecommendationService;
 import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertNotEquals;
 
@@ -20,7 +19,7 @@ import static org.junit.Assert.assertNotEquals;
 public class RecommendationServiceTest {
 
 
-    static RecommendationService recommendationService;
+    private static RecommendationService recommendationService;
 
     @BeforeClass
     public static void initModel() {
@@ -31,7 +30,8 @@ public class RecommendationServiceTest {
 
         inputRatings.add(new InputRating(2, 1, 1));
         recommendationService = new RecommendationService(inputRatings);
-        while (!recommendationService.isModelReady()) {}
+        while (!recommendationService.isModelReady()) {
+        }
     }
 
     @Test

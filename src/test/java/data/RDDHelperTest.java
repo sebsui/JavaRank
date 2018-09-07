@@ -18,8 +18,8 @@ import static org.junit.Assert.assertTrue;
 
 public class RDDHelperTest {
 
-    private static JavaSparkContext jsc = new JavaSparkContext("local", "testjsc");
-    private RDDHelper rddHelper = new RDDHelper(jsc);
+    private static final JavaSparkContext jsc = new JavaSparkContext("local", "testjsc");
+    private final RDDHelper rddHelper = new RDDHelper(jsc);
 
     @AfterClass
     public static void close() {
@@ -37,7 +37,7 @@ public class RDDHelperTest {
     @Test
     public void shouldCreateRDDFromCollectionWithConverter() {
         List<Integer> intList = IntStream.range(0, 3).boxed().collect(Collectors.toList());
-        JavaRDD stringRDD = rddHelper.getRddFromCollection(intList, integer -> integer.toString());
+        JavaRDD stringRDD = rddHelper.getRddFromCollection(intList, Object::toString);
         assertThat(stringRDD, instanceOf(JavaRDD.class));
         assertTrue(CollectionUtils.isEqualCollection(stringRDD.collect(), Arrays.asList("0", "1", "2")));
         assertThat(stringRDD, instanceOf(JavaRDD.class));

@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 
 public class RecommendationService {
 
-    private RecommendationMlModel recommendationMlModel;
+    private final RecommendationMlModel recommendationMlModel;
 
     public RecommendationService(Collection<InputRating> ratings) {
         recommendationMlModel = new RecommendationMlModel(ratings);
