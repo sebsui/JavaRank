@@ -45,7 +45,7 @@ public class RecommendationMlModel {
      * @param retrainTime  Time to wait before training a new model
      * @param initialDelay Time to wait before training the first model
      */
-    public RecommendationMlModel(Callable<Collection<InputRating>> inputRatings, long retrainTime, long initialDelay) {
+    public  RecommendationMlModel(Callable<Collection<InputRating>> inputRatings, long retrainTime, long initialDelay) {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(() -> asyncTrainModel(inputRatings), initialDelay, retrainTime, TimeUnit.SECONDS);
     }
