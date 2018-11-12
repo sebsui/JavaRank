@@ -1,4 +1,4 @@
-package ch.javarank.recommendation.exceptions;
+package ch.sebastianmue.javarank.recommendation.exceptions;
 
 /**
  * General exception, which is thrown, when there was a problem with the model training.

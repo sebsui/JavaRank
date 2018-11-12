@@ -1,10 +1,10 @@
-package ch.javarank.service;
+package ch.sebastianmue.javarank.service;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ch.javarank.recommendation.data.InputRating;
-import ch.javarank.recommendation.exceptions.ModelNotReadyException;
-import ch.javarank.recommendation.service.RecommendationService;
+import ch.sebastianmue.javarank.recommendation.data.InputRating;
+import ch.sebastianmue.javarank.recommendation.exceptions.ModelNotReadyException;
+import ch.sebastianmue.javarank.recommendation.service.RecommendationService;
 
 import java.util.ArrayList;
 

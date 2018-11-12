@@ -1,14 +1,14 @@
-package ch.javarank.recommendation.model;
+package ch.sebastianmue.javarank.recommendation.model;
 
+import ch.sebastianmue.javarank.recommendation.data.RDDHelper;
+import ch.sebastianmue.javarank.recommendation.exceptions.ErrorInDataSourceException;
+import ch.sebastianmue.javarank.recommendation.exceptions.ModelNotReadyException;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.mllib.recommendation.ALS;
 import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
-import ch.javarank.recommendation.data.InputRating;
-import ch.javarank.recommendation.data.RDDHelper;
-import ch.javarank.recommendation.exceptions.ErrorInDataSourceException;
-import ch.javarank.recommendation.exceptions.ModelNotReadyException;
+import ch.sebastianmue.javarank.recommendation.data.InputRating;
 
 import java.util.Collection;
 import java.util.List;

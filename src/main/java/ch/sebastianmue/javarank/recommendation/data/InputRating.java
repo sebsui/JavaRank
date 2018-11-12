@@ -1,4 +1,4 @@
-package ch.javarank.recommendation.data;
+package ch.sebastianmue.javarank.recommendation.data;
 
 public class InputRating {
     private int userId;

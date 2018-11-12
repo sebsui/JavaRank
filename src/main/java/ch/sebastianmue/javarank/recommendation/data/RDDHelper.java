@@ -1,4 +1,4 @@
-package ch.javarank.recommendation.data;
+package ch.sebastianmue.javarank.recommendation.data;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;

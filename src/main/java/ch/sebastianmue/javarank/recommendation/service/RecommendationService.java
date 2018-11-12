@@ -1,8 +1,8 @@
-package ch.javarank.recommendation.service;
+package ch.sebastianmue.javarank.recommendation.service;
 
-import ch.javarank.recommendation.data.InputRating;
-import ch.javarank.recommendation.exceptions.ModelNotReadyException;
-import ch.javarank.recommendation.model.RecommendationMlModel;
+import ch.sebastianmue.javarank.recommendation.data.InputRating;
+import ch.sebastianmue.javarank.recommendation.exceptions.ModelNotReadyException;
+import ch.sebastianmue.javarank.recommendation.model.RecommendationMlModel;
 
 import java.util.Collection;
 import java.util.concurrent.Callable;
