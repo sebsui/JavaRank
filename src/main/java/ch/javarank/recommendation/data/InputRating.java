@@ -1,4 +1,4 @@
-package recommendation.data;
+package ch.javarank.recommendation.data;
 
 public class InputRating {
     private int userId;

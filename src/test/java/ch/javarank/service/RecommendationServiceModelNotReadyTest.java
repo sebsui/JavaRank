@@ -1,11 +1,11 @@
-package service;
+package ch.javarank.service;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import recommendation.data.InputRating;
-import recommendation.exceptions.ModelNotReadyException;
-import recommendation.service.RecommendationService;
+import ch.javarank.recommendation.data.InputRating;
+import ch.javarank.recommendation.exceptions.ModelNotReadyException;
+import ch.javarank.recommendation.service.RecommendationService;
 
 import java.util.ArrayList;
 

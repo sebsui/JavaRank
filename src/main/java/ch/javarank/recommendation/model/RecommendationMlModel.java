@@ -1,14 +1,14 @@
-package recommendation.model;
+package ch.javarank.recommendation.model;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.mllib.recommendation.ALS;
 import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
-import recommendation.data.InputRating;
-import recommendation.data.RDDHelper;
-import recommendation.exceptions.ErrorInDataSourceException;
-import recommendation.exceptions.ModelNotReadyException;
+import ch.javarank.recommendation.data.InputRating;
+import ch.javarank.recommendation.data.RDDHelper;
+import ch.javarank.recommendation.exceptions.ErrorInDataSourceException;
+import ch.javarank.recommendation.exceptions.ModelNotReadyException;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,7 +39,7 @@ public class RecommendationMlModel {
 
     /**
      * Constructor, which allows to retrain and replace the model.
-     * The given Callable will be used to get the data for the model.
+     * The given Callable will be used to get the ch.javarank.data for the model.
      *
      * @param inputRatings callable to get the Input ratings for the Model
      * @param retrainTime  Time to wait before training a new model

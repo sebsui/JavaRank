@@ -1,8 +1,8 @@
-package recommendation.service;
+package ch.javarank.recommendation.service;
 
-import recommendation.data.InputRating;
-import recommendation.exceptions.ModelNotReadyException;
-import recommendation.model.RecommendationMlModel;
+import ch.javarank.recommendation.data.InputRating;
+import ch.javarank.recommendation.exceptions.ModelNotReadyException;
+import ch.javarank.recommendation.model.RecommendationMlModel;
 
 import java.util.Collection;
 import java.util.concurrent.Callable;

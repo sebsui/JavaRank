@@ -1,11 +1,11 @@
-package data;
+package ch.javarank.data;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.junit.AfterClass;
 import org.junit.Test;
-import recommendation.data.RDDHelper;
+import ch.javarank.recommendation.data.RDDHelper;
 
 import java.util.Arrays;
 import java.util.List;

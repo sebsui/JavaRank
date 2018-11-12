@@ -14,7 +14,7 @@ After this, the project will be ready to be released/modified.
 
 
 ## Usage example
-The following example shows, how to init the service. After training the model will give prediction, which rating the user will likely give for the product.
+The following example shows, how to init the ch.javarank.service. After training the model will give prediction, which rating the user will likely give for the product.
 ```java
 RecommendationService recommendationService = new RecommendationService(() -> dataProvider(), timeBetweenNewModels, initialDelay);
 ```
