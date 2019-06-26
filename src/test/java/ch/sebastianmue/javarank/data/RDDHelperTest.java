@@ -7,8 +7,11 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import ch.sebastianmue.javarank.recommendation.data.RDDHelper;
 
+import javax.management.Query;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,11 +38,29 @@ public class RDDHelperTest {
     }
 
     @Test
-    public void shouldCreateRDDFromCollectionWithConverter() {
+    public void shouldCreateRDDFromListWithConverter() {
         List<Integer> intList = IntStream.range(0, 3).boxed().collect(Collectors.toList());
         JavaRDD stringRDD = rddHelper.getRddFromCollection(intList, Object::toString);
         assertThat(stringRDD, instanceOf(JavaRDD.class));
         assertTrue(CollectionUtils.isEqualCollection(stringRDD.collect(), Arrays.asList("0", "1", "2")));
+    }
+    @Test
+    public void shouldCreateRDDFromSetWithConverter() {
+        Set<Integer> intList = IntStream.range(0, 3).boxed().collect(Collectors.toSet());
+        JavaRDD stringRDD = rddHelper.getRddFromCollection(intList, Object::toString);
         assertThat(stringRDD, instanceOf(JavaRDD.class));
+        assertTrue(CollectionUtils.isEqualCollection(stringRDD.collect(), Arrays.asList("0", "1", "2")));
+    }
+    @Test
+    public void shouldCreateRDDFromSetWithEmptySet() {
+        Set<Integer> intList = new HashSet<>();
+        JavaRDD stringRDD = rddHelper.getRddFromCollection(intList, Object::toString);
+        assertThat(stringRDD, instanceOf(JavaRDD.class));
+        assertTrue(stringRDD.isEmpty());
+    }
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNullPointerOnNull() {
+        List<Integer> intList = null;
+        JavaRDD stringRDD = rddHelper.getRddFromCollection(intList, Object::toString);
     }
 }
