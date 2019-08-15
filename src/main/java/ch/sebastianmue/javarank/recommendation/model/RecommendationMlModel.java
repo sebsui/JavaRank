@@ -12,6 +12,7 @@ import ch.sebastianmue.javarank.recommendation.data.InputRating;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -71,15 +72,22 @@ public class RecommendationMlModel {
      *
      * @param userId
      * @param eventId
-     * @return the prediction, which rating the used is likely to give
+     * @return the prediction, which rating the used is likely to give. If either the user or the product is unknown, it will return empty
      * @throws ModelNotReadyException
      */
-    public Double getInterestPrediction(Integer userId, Integer eventId) throws ModelNotReadyException {
+    public  Optional<Double> getInterestPrediction(Integer userId, Integer eventId) throws ModelNotReadyException {
         if (!modelIsReady)
             throw new ModelNotReadyException();
         mutex.readLock().lock();
-        Double prediction = model.predict(userId, eventId);
-        mutex.readLock().unlock();
+        Optional<Double> prediction;
+        try {
+            prediction = Optional.of(model.predict(userId, eventId));
+        } catch (IllegalArgumentException e) {
+            prediction = Optional.empty();
+        }
+        finally {
+            mutex.readLock().unlock();
+        }
         return prediction;
     }
 

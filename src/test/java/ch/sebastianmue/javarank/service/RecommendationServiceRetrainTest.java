@@ -8,6 +8,7 @@ import ch.sebastianmue.javarank.recommendation.exceptions.ModelNotReadyException
 import ch.sebastianmue.javarank.recommendation.service.RecommendationService;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
@@ -47,11 +48,11 @@ public class RecommendationServiceRetrainTest {
 
     @Test
     public void shouldDeliverANewPredictionAfterTraining() throws ModelNotReadyException {
-        Double firstPrediction = recommendationService.getPrediction(2, 3);
+        Optional<Double> firstPrediction = recommendationService.getPrediction(2, 3);
         while (recommendationService.getModelNumber() == 1) {
         }
-        Double secondPrediction = recommendationService.getPrediction(2, 3);
-        assertNotEquals(firstPrediction, secondPrediction);
-        assertThat(firstPrediction, lessThan(secondPrediction));
+        Optional<Double> secondPrediction = recommendationService.getPrediction(2, 3);
+        assertNotEquals(firstPrediction.get(), secondPrediction.get());
+        assertThat(firstPrediction.get(), lessThan(secondPrediction.get()));
     }
 }

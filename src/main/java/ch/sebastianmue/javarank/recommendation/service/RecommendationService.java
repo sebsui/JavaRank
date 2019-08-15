@@ -1,10 +1,12 @@
 package ch.sebastianmue.javarank.recommendation.service;
 
+import breeze.util.Opt;
 import ch.sebastianmue.javarank.recommendation.data.InputRating;
 import ch.sebastianmue.javarank.recommendation.exceptions.ModelNotReadyException;
 import ch.sebastianmue.javarank.recommendation.model.RecommendationMlModel;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 public class RecommendationService {
@@ -23,7 +25,7 @@ public class RecommendationService {
         return recommendationMlModel.isModelReady();
     }
 
-    public Double getPrediction(Integer userId, Integer productId) throws ModelNotReadyException {
+    public Optional<Double> getPrediction(Integer userId, Integer productId) throws ModelNotReadyException {
         return recommendationMlModel.getInterestPrediction(userId, productId);
     }
 
