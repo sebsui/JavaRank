@@ -1,5 +1,6 @@
 package ch.sebastianmue.javarank.recommendation.model;
 
+import ch.sebastianmue.javarank.recommendation.data.InputRating;
 import ch.sebastianmue.javarank.recommendation.data.RDDHelper;
 import ch.sebastianmue.javarank.recommendation.exceptions.ErrorInDataSourceException;
 import ch.sebastianmue.javarank.recommendation.exceptions.ModelNotReadyException;
@@ -8,7 +9,6 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.mllib.recommendation.ALS;
 import org.apache.spark.mllib.recommendation.MatrixFactorizationModel;
 import org.apache.spark.mllib.recommendation.Rating;
-import ch.sebastianmue.javarank.recommendation.data.InputRating;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class RecommendationMlModel {
     private final RDDHelper rddHelper = new RDDHelper(javaSparkContext);
     private MatrixFactorizationModel model;
 
-    private volatile Integer modelNumber = 0;
+    private volatile AtomicInteger modelNumber = new AtomicInteger(0);
     private volatile boolean modelIsReady = false;
 
     /**
@@ -46,7 +47,7 @@ public class RecommendationMlModel {
      * @param retrainTime  Time to wait before training a new model
      * @param initialDelay Time to wait before training the first model
      */
-    public  RecommendationMlModel(Callable<Collection<InputRating>> inputRatings, long retrainTime, long initialDelay) {
+    public RecommendationMlModel(Callable<Collection<InputRating>> inputRatings, long retrainTime, long initialDelay) {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(() -> asyncTrainModel(inputRatings), initialDelay, retrainTime, TimeUnit.SECONDS);
     }
@@ -75,7 +76,7 @@ public class RecommendationMlModel {
      * @return the prediction, which rating the used is likely to give. If either the user or the product is unknown, it will return empty
      * @throws ModelNotReadyException
      */
-    public  Optional<Double> getInterestPrediction(Integer userId, Integer eventId) throws ModelNotReadyException {
+    public Optional<Double> getInterestPrediction(Integer userId, Integer eventId) throws ModelNotReadyException {
         if (!modelIsReady)
             throw new ModelNotReadyException();
         mutex.readLock().lock();
@@ -84,8 +85,7 @@ public class RecommendationMlModel {
             prediction = Optional.of(model.predict(userId, eventId));
         } catch (IllegalArgumentException e) {
             prediction = Optional.empty();
-        }
-        finally {
+        } finally {
             mutex.readLock().unlock();
         }
         return prediction;
@@ -125,7 +125,7 @@ public class RecommendationMlModel {
         mutex.writeLock().lock();
         model = als.setRank(10).setIterations(10).run(ratingRDD);
         mutex.writeLock().unlock();
-        modelNumber++;
+        modelNumber.incrementAndGet();
         modelIsReady = true;
 
     }
@@ -139,6 +139,6 @@ public class RecommendationMlModel {
     }
 
     public Integer getModelNumber() {
-        return modelNumber;
+        return modelNumber.get();
     }
 }

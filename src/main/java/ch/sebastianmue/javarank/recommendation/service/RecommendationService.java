@@ -1,6 +1,5 @@
 package ch.sebastianmue.javarank.recommendation.service;
 
-import breeze.util.Opt;
 import ch.sebastianmue.javarank.recommendation.data.InputRating;
 import ch.sebastianmue.javarank.recommendation.exceptions.ModelNotReadyException;
 import ch.sebastianmue.javarank.recommendation.model.RecommendationMlModel;

@@ -1,13 +1,12 @@
 package ch.sebastianmue.javarank.data;
 
+import ch.sebastianmue.javarank.recommendation.data.RDDHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.junit.AfterClass;
 import org.junit.Test;
-import ch.sebastianmue.javarank.recommendation.data.RDDHelper;
 
-import javax.management.Query;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +43,7 @@ public class RDDHelperTest {
         assertThat(stringRDD, instanceOf(JavaRDD.class));
         assertTrue(CollectionUtils.isEqualCollection(stringRDD.collect(), Arrays.asList("0", "1", "2")));
     }
+
     @Test
     public void shouldCreateRDDFromSetWithConverter() {
         Set<Integer> intList = IntStream.range(0, 3).boxed().collect(Collectors.toSet());
@@ -51,6 +51,7 @@ public class RDDHelperTest {
         assertThat(stringRDD, instanceOf(JavaRDD.class));
         assertTrue(CollectionUtils.isEqualCollection(stringRDD.collect(), Arrays.asList("0", "1", "2")));
     }
+
     @Test
     public void shouldCreateRDDFromSetWithEmptySet() {
         Set<Integer> intList = new HashSet<>();
@@ -58,6 +59,7 @@ public class RDDHelperTest {
         assertThat(stringRDD, instanceOf(JavaRDD.class));
         assertTrue(stringRDD.isEmpty());
     }
+
     @Test(expected = NullPointerException.class)
     public void shouldThrowNullPointerOnNull() {
         List<Integer> intList = null;

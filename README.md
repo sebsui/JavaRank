@@ -24,7 +24,7 @@ initialDelay is the time in seconds for the first delay
   
 As soon as the model is ready (see recommendationService.isModelReady()) you can get the prediction like this
 ```java
-Double prediction = recommendationService.getPrediction(2, 3);
+Optional<Double> prediction = recommendationService.getPrediction(2, 3);
 ```
 
 ## Release History

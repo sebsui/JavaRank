@@ -1,15 +1,14 @@
 package ch.sebastianmue.javarank.service;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
 import ch.sebastianmue.javarank.recommendation.data.InputRating;
 import ch.sebastianmue.javarank.recommendation.exceptions.ModelNotReadyException;
 import ch.sebastianmue.javarank.recommendation.service.RecommendationService;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
@@ -46,14 +45,15 @@ public class RecommendationServiceTest {
     public void shouldPredictFromOtherUser() throws ModelNotReadyException {
         assertThat(recommendationService.getPrediction(2, 2).get(), lessThan(recommendationService.getPrediction(1, 3).get()));
     }
+
     @Test
     public void shouldHandleUnknownUser() throws ModelNotReadyException {
-        assertTrue(recommendationService.getPrediction(3,2).isEmpty());
+        assertTrue(recommendationService.getPrediction(3, 2).isEmpty());
     }
 
     @Test
     public void shouldHandleUnknownProduct() throws ModelNotReadyException {
-        assertTrue(recommendationService.getPrediction(2,4).isEmpty());
+        assertTrue(recommendationService.getPrediction(2, 4).isEmpty());
     }
 
 }

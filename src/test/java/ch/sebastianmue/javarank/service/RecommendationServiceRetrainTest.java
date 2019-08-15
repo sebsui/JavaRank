@@ -1,11 +1,11 @@
 package ch.sebastianmue.javarank.service;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import ch.sebastianmue.javarank.recommendation.data.InputRating;
 import ch.sebastianmue.javarank.recommendation.exceptions.ModelNotReadyException;
 import ch.sebastianmue.javarank.recommendation.service.RecommendationService;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -19,7 +19,7 @@ public class RecommendationServiceRetrainTest {
 
     private static RecommendationService recommendationService;
 
-    static boolean firstCall = true;
+    private static boolean firstCall = true;
 
     private static ArrayList<InputRating> dataProvider() {
         ArrayList<InputRating> inputRatings = new ArrayList<>();
@@ -36,7 +36,7 @@ public class RecommendationServiceRetrainTest {
 
     @BeforeClass
     public static void initModel() {
-        recommendationService = new RecommendationService(() -> dataProvider(), 10, 0);
+        recommendationService = new RecommendationService(RecommendationServiceRetrainTest::dataProvider, 10, 0);
         while (!recommendationService.isModelReady()) {
         }
     }
