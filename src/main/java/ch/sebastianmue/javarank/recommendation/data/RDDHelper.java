@@ -35,7 +35,7 @@ public class RDDHelper {
      * @param mapper     ( i.e. integer -> integer.toString() if you want to get a String RDD from a Integer list)
      * @return The JavaRDD from the same generic type as the provided input
      */
-    public <T> JavaRDD<java.lang.Object> getRddFromCollection(Collection<?> collection, Function<? super Object, ? extends T> mapper) {
+    public <T> JavaRDD<T> getRddFromCollection(Collection<?> collection, Function<? super Object, ? extends T> mapper) {
         return getRddFromCollection(collection.stream().parallel().map(mapper).collect(Collectors.toList()));
     }
 }

@@ -1,8 +1,6 @@
 package ch.sebastianmue.javarank.service;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import ch.sebastianmue.javarank.recommendation.data.InputRating;
 import ch.sebastianmue.javarank.recommendation.exceptions.ModelNotReadyException;
 import ch.sebastianmue.javarank.recommendation.service.RecommendationService;
@@ -14,12 +12,18 @@ public class RecommendationServiceModelNotReadyTest {
 
     private static RecommendationService recommendationService;
 
-    @BeforeClass
-    public static void initModel() {
+    @Before
+    public void initModel() {
         ArrayList<InputRating> inputRatings = new ArrayList<>();
         inputRatings.add(new InputRating(1, 1, 1));
         recommendationService = new RecommendationService(inputRatings);
     }
+
+    @After
+    public void destroyModel() {
+        recommendationService.close();
+    }
+
 
     @AfterClass
     public static void close() {
